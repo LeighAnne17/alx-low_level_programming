@@ -3,7 +3,7 @@
  * main - main block
  * print alphabet in lowercase
  * then in uppercase
- * followed by a line 
+ * followed by a line
  * Return: 0
  */
 int main(void)
@@ -23,7 +23,7 @@ int main(void)
 		putchar(c);
 		c++;
 	}
-	
+
 	putchar('\n');
 	return (0);
 }
