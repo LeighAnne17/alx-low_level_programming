@@ -2,8 +2,9 @@
 #include <stdio.h>
 #include <time.h>
 /**
- * main - main block 
- * Get a random number and print the number and if it is positive, negative, or zero
+ * main - main block
+ * Get a random number and print the number
+ * if it is positive, negative, or zero
  * Return: 0;
  */
 int main(void)
@@ -19,5 +20,4 @@ int main(void)
 	else
 		printf("%i is zero\n", n);
 	return (0);
-  
 }
