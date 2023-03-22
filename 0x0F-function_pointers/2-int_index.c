@@ -5,7 +5,7 @@
  * @size: number of elements
  * @array: array
  * @cmp: pointer
- * Return:  index of the first element for which 
+ * Return:  index of the first element for which
  * the cmp function does not return 0
  * If no element matches, return -1
  * If size <= 0, return -1
