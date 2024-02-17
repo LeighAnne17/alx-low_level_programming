@@ -1,5 +1,5 @@
 #include <elf.h>
-#include <sys/tyoes.h>
+#include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <unistd.h>
@@ -8,7 +8,7 @@
 
 void check_elf(unsigned char *e_indentity);
 void print_magic(unsigned char *e_identity);
-void print _class(unsigned char *e_identity);
+void print_class(unsigned char *e_identity);
 void print_data(unsigned char *e_identity);
 void print_version(unsigned char *e_identity);
 void print_abi(unsigned char *e_identity);
@@ -19,7 +19,7 @@ void close_elf(int elf);
 
 /**
  * check_elf - chacks if it is an ELF file
- * @e_indentity: pointer
+ * @e_identity: pointer
  */
 
 void check_elf(unsigned char *e_identity)
@@ -28,9 +28,12 @@ void check_elf(unsigned char *e_identity)
 
 	for (i = 0; i < 4; i++)
 	{
-		if (e_identity[1] != 127 && e_identity[i] != 'E' && e_identity[i] != 'L' && e_identity[i] != 'F')
+		if (e_identity[1] != 127 &&
+				e_identity[i] != 'E' &&
+				e_identity[i] != 'L' &&
+				e_identity[i] != 'F')
 		{
-			dprintf(STERR_FILENO, "Error :not an ELF file\n");
+			dprintf(STDERR_FILENO, "Error :not an ELF file\n");
 			exit(98);
 		}
 	}
@@ -43,15 +46,15 @@ void check_elf(unsigned char *e_identity)
 
 void print_magic(unsigned char *e_identity)
 {
-	int = i;
+	int i;
 
-	print("Magic: ");
+	printf("Magic: ");
 
-	for (i = 0; i < EI_NIDENTITY; i++)
+	for (i = 0; i < EI_NIDENT; i++)
 	{
-		printf("%02x", e_indentity[i]);
+		printf("%02x", e_identity[i]);
 
-		if (index == EI_NIDENTITY - 1)
+		if (i == EI_NIDENT - 1)
 			printf("\n");
 		else
 			printf(" ");
@@ -109,7 +112,7 @@ void print_data(unsigned char *e_identity)
 /**
  *  * print_version - Prints the version of an ELF header.
  *   * @e_identity: A pointer
- *    */
+ */
 void print_version(unsigned char *e_identity)
 {
 	 printf(" Version: %d",
@@ -167,13 +170,13 @@ void print_osabi(unsigned char *e_identity)
 		printf("Standalone App\n");
 		break;
 	default:
-		printf("<unknown: %x>\n", e_ident[EI_OSABI]);
+		printf("<unknown: %x>\n", e_identity[EI_OSABI]);
 	}
 }
 
 /**
- * print_abi - Prints the ABI version of an ELF header.
- * @e_identity: A pointer to an array containing the ELF ABI version.
+ * print_abi - Prints the ABI
+ * @e_identity: A pointer
  */
 void print_abi(unsigned char *e_identity)
 {
@@ -289,16 +292,16 @@ int main(int __attribute__((__unused__)) argc, char *argv[])
 		exit(98);
 	}
 
-	check_elf(header->e_identity);
+	check_elf(header->e_ident);
 	printf("ELF Header:\n");
-	print_magic(header->e_identity);
-	print_class(header->e_identity);
-	print_data(header->e_identity);
-	print_version(header->e_identity);
-	print_osabi(header->e_identity);
-	print_abi(header->e_identity);
-	print_type(header->e_type, header->e_identity);
-	print_entry(header->e_entry, header->e_identity);
+	print_magic(header->e_ident);
+	print_class(header->e_ident);
+	print_data(header->e_ident);
+	print_version(header->e_ident);
+	print_osabi(header->e_ident);
+	print_abi(header->e_ident);
+	print_type(header->e_type, header->e_ident);
+	print_entry(header->e_entry, header->e_ident);
 
 	free(header);
 	close_elf(o);

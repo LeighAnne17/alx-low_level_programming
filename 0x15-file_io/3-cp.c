@@ -1,6 +1,7 @@
 #include "main.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <sys/stat.h>
 
 char *create_buffer(char *file);
 void close_file(int filedirection);
@@ -39,7 +40,7 @@ void close_file(int fd)
 
 	if ( c == -1)
 	{
-		dprint(STDERR_FILENO, "Erroe: Can't close fd %d\n", fd);
+		dprintf(STDERR_FILENO, "Erroe: Can't close fd %d\n", fd);
 		exit (100);
 	}
 }
@@ -65,7 +66,7 @@ int main(int argc, char *argv[])
 	buffer = create_buffer(argv[2]);
 	from = open(argv[1], O_RDONLY);
 	r = read(from, buffer, 1024);
-	to = open(argv[2], O_CREAT | 0_WRONLY | _TRUNC, 0664);
+	to = open(argv[2], O_CREAT | O_WRONLY | O_TRUNC, 0664);
 
 	do {
 
@@ -79,7 +80,7 @@ int main(int argc, char *argv[])
 		w = write(to,buffer, r);
 		if (to == -1 || w == -1)
 		{
-			dprintf (STERR_FILENO, "Erroe:Can't wite to %s\n", argv[2]);
+			dprintf (STDERR_FILENO, "Error:Can't wite to %s\n", argv[2]);
 			free(buffer);
 			exit(99);
 		}

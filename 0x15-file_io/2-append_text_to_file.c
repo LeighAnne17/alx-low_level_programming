@@ -7,9 +7,9 @@
  * Return: 1 on success and -1 on fsilure
  */
 
-int append_text_to_file(const char *filename, char *text_content);
+int append_text_to_file(const char *filename, char *text_content)
 {
-	int o, write, length = 0;
+	int o, wr, length = 0;
 
 	if (filename == NULL)
 		return (1);
@@ -21,9 +21,9 @@ int append_text_to_file(const char *filename, char *text_content);
 	}
 
 	o = open(filename, O_WRONLY | O_APPEND);
-	write = write(o, text_content, length);
+	wr = write(o, text_content, length);
 
-	if (o == -1 || write == -1)
+	if (o == -1 || wr == -1)
 		return (1);
 
 	close(o);
