@@ -2,34 +2,41 @@
 #include "hash_tables.h"
 
 /**
- * hash_table_create - Creates a hash table
- * @size: The size of the array
+ * Creates a hash table of a given size.
  *
- * Return: A pointer to the newly created hash table, or NULL if it fails
+ * @param size The number of elements in the hash table.
+ * @return A pointer to the newly created hash table; returns NULL if the creation fails.
  */
 hash_table_t *hash_table_create(unsigned long int size)
 {
-    hash_table_t *ht;
-    unsigned long int i;
+    hash_table_t *table;  /* Declare variables at the start of the block */
+    hash_node_t **array;  /* Additional pointer to handle array allocation */
 
-    /* Allocate memory for the hash table */
-    ht = malloc(sizeof(hash_table_t));
-    if (ht == NULL)
-        return (NULL);
-
-    /* Allocate memory for the array of pointers */
-    ht->array = malloc(sizeof(hash_node_t *) * size);
-    if (ht->array == NULL)
+    /* Return NULL if size is zero, as a hash table cannot be created with zero elements */
+    if (size == 0)
     {
-        free(ht); /* Free the previously allocated memory */
-        return (NULL);
+        return NULL;
     }
 
-    /* Initialize each element of the array to NULL */
-    for (i = 0; i < size; i++)
-        ht->array[i] = NULL;
+    /* Allocate memory for the hash table structure */
+    table = calloc(1, sizeof(hash_table_t));
+    if (table == NULL)
+    {
+        return NULL;  /* Return NULL if memory allocation fails */
+    }
 
-    ht->size = size;
+    /* Allocate memory for the array of pointers to hash nodes */
+    array = calloc(size, sizeof(hash_node_t *));
+    if (array == NULL)
+    {
+        free(table);  /* Free the hash table structure if array allocation fails */
+        return NULL;
+    }
 
-    return (ht);
+    /* Set the size of the hash table */
+    table->size = size;
+    table->array = array;  /* Assign the allocated array to the table's array pointer */
+
+    /* Return the pointer to the newly created hash table */
+    return table;
 }

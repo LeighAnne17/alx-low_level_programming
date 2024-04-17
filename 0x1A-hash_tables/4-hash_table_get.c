@@ -3,32 +3,43 @@
 #include "hash_tables.h"
 
 /**
- * hash_table_get - Retrieves a value associated with a key
- * @ht: The hash table
- * @key: The key
+ * Retrieves the value associated with a specific key in the hash table.
  *
- * Return: The value associated with the element, or NULL if key couldn’t be found
+ * This function uses the hash function to determine the index of the array where
+ * the key-value pair should be located. It then traverses the linked list at that
+ * index to find the key and return the corresponding value.
+ *
+ * @param ht Pointer to the hash table.
+ * @param key The key for which to retrieve the value.
+ * @return The value associated with the key, or NULL if the key is not found.
  */
 char *hash_table_get(const hash_table_t *ht, const char *key)
 {
     unsigned long int index;
-    hash_node_t *temp;
+    hash_node_t *bucket;
 
-    if (ht == NULL || key == NULL || *key == '\0')
-        return (NULL);
-
-    index = key_index((unsigned char *)key, ht->size);
-
-    /* Traverse the linked list at the calculated index */
-    temp = ht->array[index];
-    while (temp != NULL)
+    // Validate input parameters.
+    if (!ht || !key || !*key) // Check for NULL hash table, key, or empty key string.
     {
-        /* Compare keys and return value if found */
-        if (strcmp(temp->key, key) == 0)
-            return (temp->value);
-        temp = temp->next;
+        return NULL;
     }
 
-    /* Key not found */
-    return (NULL);
+    // Calculate the index for this key using the hash function.
+    index = key_index((const unsigned char *)key, ht->size);
+
+    // Access the bucket at the calculated index.
+    bucket = ht->array[index];
+
+    // Traverse the linked list at this bucket to find the key.
+    while (bucket != NULL)
+    {
+        if (strcmp(key, bucket->key) == 0) // Compare the current node's key with the target key.
+        {
+            return bucket->value; // Return the found value.
+        }
+        bucket = bucket->next; // Move to the next node in the list.
+    }
+
+    // If the key is not found, return NULL.
+    return NULL;
 }
